@@ -1,0 +1,28 @@
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:2022.07.1
+    steps:
+      - checkout
+      # Install Terraform
+      - run: sudo apt-get update
+      - run: sudo apt install  software-properties-common gnupg2 curl
+      - run: curl https://apt.releases.hashicorp.com/gpg | gpg --dearmor > hashicorp.gpg
+      - run: sudo install -o root -g root -m 644 hashicorp.gpg /etc/apt/trusted.gpg.d/
+      - run: sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      - run: sudo apt update && sudo apt install terraform
+      - run: terraform --version
+      # Install AZURE CLI
+      - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      # Install terragrunt
+      - run: sudo wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.38.9/terragrunt_linux_amd64
+      - run: sudo mv terragrunt_linux_amd64 terragrunt
+      - run: sudo chmod u+x terragrunt
+      - run: sudo mv terragrunt /usr/local/bin/terragrunt
+      - run: sudo chmod 777 /usr/local/bin/terragrunt
+      - run: terragrunt --version
+      
+      #terragrunt plan apply
+      - run: az login -u ramakrishna.diddele@thinkartha.com -p Bani.d@1234
+      - run: git clone https://github.com/subhransu-1/terragrunt-azure-example.git
+      - run: cd terragrunt-azure-example/vs-enterprise/staging/global/resource_groups && terraform init && terragrunt plan
