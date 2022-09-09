@@ -6,7 +6,7 @@ jobs:
       - checkout
       # Install Terraform
       - run: sudo apt-get update
-      - run: sudo apt install  software-properties-common gnupg2 curl.
+      - run: sudo apt install  software-properties-common gnupg2 curl
       - run: curl https://apt.releases.hashicorp.com/gpg | gpg --dearmor > hashicorp.gpg
       - run: sudo install -o root -g root -m 644 hashicorp.gpg /etc/apt/trusted.gpg.d/
       - run: sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
